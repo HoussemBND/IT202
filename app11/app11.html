@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>app11 </title>
+    </head>
+    <body>
+<!-- Include Dexie -->
+      <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+      <script>
+          var mydb = new Dexie("MyDB");
+          mydb.version(1).stores({settings:"name, gender"});
+          mydb.on("populate", function(){
+              mydb.settings. add ({name:"Josef", gender:"male"});
+          });
+          mydb.open();
+      </script>
+    </body>
+</html>

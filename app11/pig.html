@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <canvas id ="canvas1"  ></canvas>
+        <style>
+            #canvas1{
+              background-image: url("https://i.pinimg.com/originals/0d/e1/ea/0de1ea0f6e5e349c2fb0e10d2731af83.png");
+            }
+        </style>
+    </head>
+    <body>
+        
+        
+         
+        <script>
+        var scene = document.getElementById("canvas1");
+		
+        
+	    var ctx = scene.getContext("2d");
+	        
+			
+		
+        
+        
+        scene.width = window.innerWidth;
+        scene.height = window.innerHeight;
+        var c = document.getElementById("canvas1");
+        
+        var ctx = c.getContext("2d");
+        ctx.font = "bold 90px Georgia";
+        ctx.fillStyle = "orange";
+        ctx.fillText("Welcome",scene.width/2 - scene.width/8 , scene.height/4);
+        ctx.textAlign = "center";
+        ctx.fillStyle = "orange";
+        ctx.fillText("Click ENTER to start game",scene.width/2, scene.height/2);
+        ctx.textAlign = "center";
+        
+        var lives = 3;
+        var score = 0;
+        var fps = 0;
+        var ship = new Image();
+        ship.src = "http://www.pngmart.com/files/3/Spaceship-PNG-File.png";
+        var gameOver = false;
+
+        function Player()
+        {
+            
+            
+            this.x = scene.width/2
+            this.y = scene.height -100;
+            this.height = 50;
+            this.width = 50;
+            
+        }
+        
+        function Harm()
+        {
+            this.x = Math.floor((Math.random() * scene.width));
+            this.y = -100;
+            this.color = "red";
+            this.height = 50;
+            this.width = 50;
+        }
+        
+        Harm.prototype.draw = function()
+        {
+            ctx.clearRect(this.x,this.y,this.width, this.height);
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x,this.y,this.width,this.height);
+            
+        };
+        
+        Harm.prototype.update = function()
+        {
+            this.y += 10;
+            if(this.y <= -100)
+            {
+                this.x = Math.floor(Math.random() * (scene.width));
+                this.y = 0;
+            }
+            if (myPlayer.x < this.x + this.width &&
+                myPlayer.x + myPlayer.width > this.x &&
+                myPlayer.y < this.y + this.height &&
+                myPlayer.height + myPlayer.y > this.y) 
+                {
+                   
+                    lives = lives - 1;
+                    this.x = Math.floor((Math.random() * scene.width));
+                    this.y = Math.floor((Math.random() * -200) - 100);
+                    score = score - 10;
+                }
+            if(lives < 1)
+            {
+                gameOver = true;
+            }
+        };
+        
+        function Lifers()
+        {
+            this.x = Math.floor(Math.random() * scene.width);
+            this.y = 0;
+            this.color = "green";
+            this.height = 20;
+            this.width = 20;
+        }
+        
+        Lifers.prototype.draw = function()
+        {
+            ctx.clearRect(this.x, this.y, this.width, this.height);
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        };
+        
+        Lifers.prototype.update = function()
+        {
+            this.y += 5;
+            if(this.y <= 0 )
+            {
+                this.x = Math.floor(Math.random() * (scene.width));
+                this.y = 0;
+            }
+            if (myPlayer.x < this.x + this.width &&
+                myPlayer.x + myPlayer.width > this.x &&
+                myPlayer.y < this.y + this.height &&
+                myPlayer.height + myPlayer.y > this.y) 
+                {
+                    this.x = Math.floor((Math.random() * scene.width));
+                    this.y = Math.floor((Math.random() * scene.height));
+                    score = score + 5;
+                    lives = lives + 1;
+
+                }
+        };
+
+        function myScore()
+        {
+            ctx.beginPath();
+            ctx.font = "20px Georgia";
+            ctx.fillStyle = "yellow";
+            ctx.fillText("   SCORE : " + score, 50, 50);
+        }
+        
+        
+        
+        function myLives()
+        {
+            ctx.beginPath();
+            ctx.font = "20px Georgia";
+            ctx.fillStyle = "yellow";
+            ctx.fillText("Lives : " + lives, 50, 100);
+        }
+        
+        Player.prototype.draw = function(){
+            ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+            ctx.beginPath();
+            ctx.drawImage(ship, this.x, this.y, this.width, this.height);
+        };
+        
+        
+        
+            var myPlayer = new Player();
+            var Harmers = [];
+            for(var i = 0; i < 3; i++)
+            {
+                Harmers.push(new Harm());
+            }
+            var lifers = new Lifers();
+            
+            var keyState = [];
+            
+            window.addEventListener('keydown', function(e)
+            {
+                keyState[e.keyCode || e.which] = true;
+            });
+            
+            window.addEventListener('keyup', function(e)
+            {
+                keyState[e.keyCode || e.which] = false;
+            });
+            
+            function checkInput ()
+            {
+                if(keyState[38])
+                {
+                    myPlayer.y -= 8;
+                }
+                if(keyState[40])
+                {
+                    myPlayer.y += 8;
+                }
+                if(keyState[37])
+                {
+                    myPlayer.x -= 8;
+                }
+                if(keyState[39])
+                {
+                    myPlayer.x += 8;
+                }
+                
+            }
+            
+            function updateScore()
+            {
+                if(!gameOver)
+                {
+                
+                    fps += 1;
+                    if (fps % 60 == 0)
+                    {
+                      score += 1;
+                     }
+                }
+            
+            }
+            
+            function main()
+            {
+                
+                
+                  myPlayer.draw();
+                  for(var i = 0; i < 3; i++)
+                  {
+                      Harmers[i].draw();
+                      Harmers[i].update();
+                  }
+                  lifers.draw();
+                  lifers.update();
+                  checkInput();
+                  updateScore();
+                  myScore();
+                  myLives();
+                  if(!gameOver)
+                  {
+                  requestAnimationFrame(main);
+                  }
+                  if(gameOver)
+                  {
+                      GameOver();
+                  }
+            }
+            
+            //
+            function GameOver()
+            {
+                        
+                var scene = document.getElementById("canvas1");
+                var ctx = scene.getContext("2d");
+                scene.width = window.innerWidth;
+                scene.height = window.innerHeight;
+                var c = document.getElementById("canvas1");
+                var ctx = c.getContext("2d");
+                ctx.font = "bold 90px Georgia";
+                ctx.fillStyle = "red";
+                ctx.fillText("Game Over",scene.width/2 - scene.width/7 , scene.height/4);
+                ctx.fillText("   SCORE : " + score, scene.width/2 - scene.width/7 , scene.height/1.5);
+                ctx.textAlign = "center";
+                
+                requestAnimationFrame(GameOver);
+               
+                
+            }
+            
+            
+            //
+            
+           window.addEventListener('keypress', function(e)
+            {
+                if(e.keyCode == 13)
+                {
+                    alert(" To quit game press 'esc'");
+                    main();
+                }
+            });
+            
+           
+
+            // 
+                       
+            window.addEventListener('keydown', function(e) 
+            {
+                if(e.keyCode == 27 )
+                {
+                    gameOver = true;
+                    alert("Game Over");
+                    GameOver();
+                    
+                }
+                                        
+            });
+            window.addEventListener('keydown', function(e) 
+            {
+                if(e.keyCode == 84 && e.ctrlKey )
+                {
+                    gameOver = false;
+                    lives = 3;
+                    score = 0;
+                    main();
+                    
+                }
+                                        
+            });
+            
+            
+                        
+        </script>
+    </body>
+</html>

@@ -15,10 +15,10 @@
 <body>
     
     <script>
-    $.get("https://data.cityofchicago.org/resource/cdmx-wzbz.json?$limit=10", function(response) {
+    $.get("https://data.cityofchicago.org/resource/cdmx-wzbz.json?$limit=1000", function(response) {
             $.each(response, function(i,v) {
                //console.log(v.street_address);
-               $("body").append(v.street_address + "<br>");
+               $("body").append(v.latitude + "<br>" + v.longitude);
             });
     });
 

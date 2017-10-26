@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<canvas id="mycanvas" width="300" height="250"></canvas>
+<script>
+    $("#mycanvas").on("click", function(evt){
+        console.log(evt);
+        drawcircle(evt.clientX, evt.clientY);
+    });
+
+    function drawcircle(x,y){
+        var c = document.getElementById("mycanvas");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(x,y,40,0,2*Math.PI);
+        ctx.stroke();
+        }
+</script>
+</body>
+</html>
