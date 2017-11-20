@@ -1,4 +1,4 @@
-$.getJSON( "https://data.cityofchicago.org/resource/cwig-ma7x.json", function( data ) {
+/*$.getJSON( "https://data.cityofchicago.org/resource/cwig-ma7x.json", function( data ) {
   var items = [];
   $.each( data, function( key, val ) {
     items.push( "<li id='" + key + "'>" + val + "</li>" );
@@ -16,8 +16,14 @@ function getData () {
         
         $("input,select").each(function() {
           formData[$(this).attr("id")] = $(this).val();
-        });
-  $(function() {
+        })
+  
+  
+  
+  
+  
+  
+  /*$(function() {
   // Handle click collapse and expand function on click
   $('.tree-div').click(function() {
     $(this).next().toggleClass('tree-open');
@@ -60,4 +66,4 @@ function getData () {
       $('.tree-li-ul-li').slideDown();
     }
   });
-});
+});*/
