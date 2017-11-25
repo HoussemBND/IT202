@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Traffic Violation Cameras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="./app.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+  <link rel="manifest" href="./manifest.json">
+</head>
+
+<body class="mdc-typography">
+
+  <!-- Toolbar -->
+  <header id="camera-header" class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
+    <div class="mdc-toolbar__row">
+      
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <a id="camera-nav-icon" class="material-icons mdc-ripple-surface" href="#" aria-label="Click to show the navigation menu" aria-controls="camera-nav-menu" data-mdc-auto-init="MDCRipple" data-mdc-ripple-is-unbounded>menu</a>
+        <h1 class="mdc-toolbar__title"><span>Traffic Violation Cameras
+        </span></h1>
+      </section>
+    </div>
+  </header>
+
+  
+
+  <!--Red Light Camera Screen-->
+  <div id="red-screen" class="mdc-toolbar-fixed-adjust screen">
+    
+    <div class="mdc-layout-grid">
+      <h1 class="mdc-typography screen-header">Stop Light Camera Finder</h1>
+    </div>
+    <div class="divider-container">
+      <ul class="mdc-list">
+        <li role='separator' class='mdc-list-divider'></li>
+      </ul>
+    </div>
+    <div class="mdc-layout-grid">
+       <button class="mdc-button mdc-layout-grid__cell--span-4 stop-map-button">Locate Stop Light Camera</button>
+    </div>
+    <div class="result-container">
+      <ul class="mdc-list">
+      </ul>
+    </div>
+  </div>
+
+  <!--Speed Camera Screen-->
+  <div id="red-screen" class="mdc-toolbar-fixed-adjust screen">
+    <div class="mdc-layout-grid">
+      <h1 class="mdc-typography screen-header">Speed Camera Finder</h1>
+    </div>
+    <div class="divider-container">
+      <ul class="mdc-list">
+        <li role='separator' class='mdc-list-divider'></li>
+      </ul>
+    </div>
+    <div class="mdc-layout-grid">
+   <button class="mdc-button mdc-layout-grid__cell--span-4 stop-map-button">Locate Speed Camera</button>
+
+    </div>
+    <div class="result-container">
+      <ul class="mdc-list">
+      </ul>
+    </div>
+  </div>
+   <!--Google map-->
+  <div class="mdc-layout-grid" id="map"></div>
+
+  <!--Ink ripple effect for toolbar menu button-->
+  <script src="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.js"></script>
+
+    <script>
+      
+      function getLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              initMap(position.coords.latitude, position.coords.longitude);
+            });
+        } else {
+          alert('no geolocation');
+        }
+      }
+    
+      function initMap(lat, lng) {
+        var uluru = {lat: lat, lng: lng};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT4jRQQNNBTIb0Xn8LrdlJG_BXLrFGmsU&callback=getLocation">
+    </script>
