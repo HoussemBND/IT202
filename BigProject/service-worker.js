@@ -1,10 +1,9 @@
 var cacheName = 'cameraApp';
-var dataCacheName = 'cta-data-v1';
+var dataCacheName = 'camera';
 var filesToCache = [
   './',
   './index.html',
   './app.css',
-  './cta-logo.png'
 ];
 
 self.addEventListener('install', function(e) {
