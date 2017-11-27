@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Traffic Violation Cameras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" sizes="192x192" href="https://material.io/static/images/simple-lp/favicons/components-192x192.png">
+  <link rel="shortcut icon" href="https://material.io/static/images/simple-lp/favicons/components-72x72.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="app2.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+  <link rel="manifest" href="/manifest.json">
+</head>
+`
+<body class="mdc-typography">
+
+  <!-- Toolbar -->
+  <header id="shrine-header" class="mdc-toolbar mdc-toolbar--fixed mdc-theme--text-primary-on-background">
+    <div class="mdc-toolbar__row">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <a id="shrine-nav-icon" class="material-icons mdc-ripple-surface" href="#" aria-label="Click to show the navigation menu" aria-controls="shrine-nav-menu" data-mdc-auto-init="MDCRipple" data-mdc-ripple-is-unbounded>menu</a>
+        <h1 id="shrine-logo" class="mdc-toolbar__title"><span>Traffic Violation Cameras</span></h1>
+      </section>
+    </div>
+  </header>
+
+  <!-- Temporary Drawer -->
+  <aside id="shrine-nav-menu" class="mdc-temporary-drawer" data-mdc-auto-init="MDCTemporaryDrawer">
+    <nav class="mdc-temporary-drawer__drawer">
+      <header class="mdc-temporary-drawer__header"></header>
+      <nav class="mdc-temporary-drawer__content mdc-list">
+        <a class="mdc-list-item nav-item" href="#stop-screen">Stop Light Cameras</a>
+        <a class="mdc-list-item nav-item" href="#speed-screen">Speed Cameras</a>
+        <a class="mdc-list-item nav-item" href="#about">About</a>
+      </nav>
+    </nav>
+  </aside>
+   <!--Red Light Camera Screen-->
+  <div id="red-screen" class="mdc-toolbar-fixed-adjust screen">
+    
+    <div class="mdc-layout-grid">
+        
+      <h1 class="mdc-typography screen-header">Stop-Light Camera Finder</h1>
+    </div>
+    
+    <div>
+       <button  id= "stopSearch">Locate Stop Light Camera</button>
+    </div>
+
+  </div>
+
+  <!--Speed Camera Screen-->
+  <div id="speed-screen" class="mdc-toolbar-fixed-adjust hidden screen">
+    <div class="mdc-layout-grid">
+      <h1 class="mdc-typography screen-header">Speed Camera Finder</h1>
+    </div>
+    <div>
+   <button id="speedSearch">Locate Speed Camera</button>
+
+    </div>
+    
+  </div>
+  <div id="about-screen" class="mdc-toolbar-fixed-adjust hidden screen">
+    
+    <div class="mdc-layout-grid">
+      <h1 class="mdc-typography screen-header">About Us</h1>
+    </div>
+    </div>
+
+  <!--Ink ripple effect for toolbar menu button-->
+  <script src="https://unpkg.com/material-components-web@0.9.1/dist/material-components-web.min.js">
+  </script>
+  <script>
+    mdc.autoInit()
+  </script>
+
+  <!--open drawer-->
+  <script>
+    mdc.autoInit();
+    document.getElementById('shrine-nav-icon').addEventListener('click', function(evt) {
+      evt.preventDefault();
+      document.getElementById('shrine-nav-menu').MDCTemporaryDrawer.open = true;
+    });
+    $("mdc-list-item").on("click", function() {
+      document.getElementById('shrine-nav-menu').MDCTemporaryDrawer.open = false;
+    });
+    
+  </script>
+  <script>
+    /*global navigator*/
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('./service-worker.js')
+        .then(function() { console.log("Service Worker Registered"); });
+    }
+  </script>
+   <!--screen navigation-->
+  <script type="text/javascript">
+    /* global $ */
+    $(".nav-item").on("click", function(event) {
+      console.log($(this).attr("href"));
+      $(".screen").addClass("hidden");
+      $($(this).attr("href")).removeClass("hidden");
+
+      /*if ($(this).attr("href") == "#map-screen") {
+        // clear map
+        //$("#map").attr("style", "position:relative; visibility: visible");
+        $("#map").removeClass("hide-map")
+        //google.maps.event.trigger(map, 'resize');
+      }
+      else {
+        // hide map
+        //$("#map").attr("style", "position:relative; visibility: hidden");
+        $("#map").addClass("hide-map");
+      }*/
+
+      event.preventDefault();
+    });
+  </script>-->
+   
+    <!--IndexedDB-->
+    <script>
+          
+          var db = new Dexie("tickets_database");
+          db.version(1).stores({
+              tickets: 'ticket,penalty'
+          });
+          db.tickets.put({ticket: "red light ticket", penalty: 100});
+          db.tickets.put({ticket: "speeding ticket", penalty: 100});
+          
+      </script>
+      <div class="mdc-layout-grid" id="map"></div>
+      <script>
+    /* global navigator */ /* global google */ /* global $ */
+    var map;
+    
+
+    /*$("stopSearch").on("click", function() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          initMap(position.coords.latitude, position.coords.longitude);
+        });
+      }
+      else {
+        /*no geo location
+        alert("no geolocation");
+      }
+    });
+
+    function initMap(lat, long) {
+      var userPos = { lat: lat, lng: long };
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: userPos
+      });
+      
+       $.ajax({
+        type: "GET",
+        url: "/Red_Light_Camera_Locations.csv",
+        dataType: "text",
+        success: function(response) {
+          var data = $.csv.toArrays(response);
+          $.each(data, function(i, value){
+              var camLat;
+              var camLong;
+              var coorString = value[7].substring(1, value[7].length-1);
+              var coordinates = coorString.split(", ");
+              console.log(coordinates);
+              lightCamPos =  { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) };
+              var infoString = "<h6>" + value[0] + "</h6>;
+              var infowindow = new google.maps.InfoWindow({
+                content: infoString
+              });
+              var marker = new google.maps.Marker({
+                position: lightCamPos,
+                map: map
+              });
+              marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });
+              
+          }
+        });*/
+        <script>
+      
+      function getLocation() {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              initMap(position.coords.latitude, position.coords.longitude);
+            });
+        } else {
+          alert('no geolocation');
+        }
+      }
+    
+      function initMap(lat, lng) {
+        var uluru = {lat: lat, lng: lng};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        $.ajax({
+        type: "GET",
+        url: "./Red_Light_Camera_Locations.csv",
+        dataType: "text",
+        success: function(response) {
+          var data = $.csv.toArrays(response);
+          $.each(data, function(i, value){
+              var camLat;
+              var camLong;
+              var coorString = value[7].substring(1, value[7].length-1);
+              var coordinates = coorString.split(", ");
+              console.log(coordinates);
+              var lightCamPos =  { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) };
+              var infoString = "<h6>" + value[0] + "</h6>;
+              var infowindow = new google.maps.InfoWindow({
+                content: infoString
+              });
+        var   var marker = new google.maps.Marker({
+                position: lightCamPos,
+                map: map,
+                title: 'Uluru (Ayers Rock)'
+              });
+              
+              marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });
+      }
+    </script>
+    
+    <script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT4jRQQNNBTIb0Xn8LrdlJG_BXLrFGmsU&callback=getLocation">
+    </script>
+  </body>
+</html>
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJYA2Usidu4Gnz0X2BfWWIAoaBm6lCiZ0&callback=initMap"></script>
+
+     
+</body>
+
+</html>

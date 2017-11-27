@@ -1,0 +1,83 @@
+/* stylelint-disable */
+
+html, body {
+  height: 100%;
+  background-color: blanchedalmond;
+}
+
+
+#shrine-header {
+  background-color: grey;
+  color: black;
+}
+
+#shrine-header .mdc-toolbar__section {
+  overflow: visible;
+}
+
+#shrine-logo {
+  
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+}
+.hidden{
+  display: none;
+}
+
+/* Hide actual text for screen readers */
+#shrine-logo > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: visible;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+#shrine-nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 40px;
+  text-decoration: none;
+}
+
+#shrine-nav-icon:visited,
+#shrine-nav-icon:active,
+#shrine-nav-icon:focus {
+  color: var(--mdc-theme-text-primary-on-background);
+}
+#shrine-nav-menu {
+  text-transform: uppercase;
+  padding-left: 16px;
+}
+
+#shrine-nav-menu .mdc-temporary-drawer__drawer {
+  background-color: aquamarine;
+}
+
+
+#shrine-nav-menu .mdc-temporary-drawer__header::before {
+  padding-top: 30%;
+}
+
+#shrine-nav-menu .mdc-temporary-drawer__content {
+  
+  background-size: 50%;
+}
+
+#shrine-nav-menu .mdc-list-item {
+  height: 32px;
+  padding-left: 32px;
+  letter-spacing: .2em;
+}
+#shrine-products {
+  --mdc-layout-grid-gutter: 8px;
+}
+
+#shrine-products .mdc-layout-grid__cell {
+  display: flex;
+  justify-content: center;
+}

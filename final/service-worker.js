@@ -2,9 +2,10 @@ var cacheName = 'cameraApp';
 var dataCacheName = 'camera';
 var filesToCache = [
   './',
-  './index.html',
-  './app.css',
+  './index2.html',
+  './app2.css',
 ];
+//new Request('https://farm6.staticflickr.com/5594/14749918329_888df4f2ef.jpg', {mode: 'no-cors'})
 
 self.addEventListener('install', function(e) {
   console.log('[ServiceWorker] Install');
