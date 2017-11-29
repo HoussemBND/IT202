@@ -3,6 +3,7 @@
 html, body {
   height: 100%;
   background-color: blanchedalmond;
+  background-image: url("https://i.redd.it/hyxlbwggak1x.png");
 }
 
 
@@ -64,7 +65,7 @@ html, body {
 }
 
 #shrine-nav-menu .mdc-temporary-drawer__content {
-  
+  background: url(assets/diamond.svg) -32px bottom no-repeat;
   background-size: 50%;
 }
 

@@ -95,7 +95,6 @@
     
   </script>
   <script>
-    /*global navigator*/
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('./service-worker.js')
@@ -109,22 +108,9 @@
       console.log($(this).attr("href"));
       $(".screen").addClass("hidden");
       $($(this).attr("href")).removeClass("hidden");
-
-      /*if ($(this).attr("href") == "#map-screen") {
-        // clear map
-        //$("#map").attr("style", "position:relative; visibility: visible");
-        $("#map").removeClass("hide-map")
-        //google.maps.event.trigger(map, 'resize');
-      }
-      else {
-        // hide map
-        //$("#map").attr("style", "position:relative; visibility: hidden");
-        $("#map").addClass("hide-map");
-      }*/
-
       event.preventDefault();
     });
-  </script>-->
+  </script>
    
     <!--IndexedDB-->
     <script>
@@ -138,60 +124,11 @@
           
       </script>
       <div class="mdc-layout-grid" id="map"></div>
-      <script>
-    /* global navigator */ /* global google */ /* global $ */
-    var map;
-    
-
-    /*$("stopSearch").on("click", function() {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          initMap(position.coords.latitude, position.coords.longitude);
-        });
-      }
-      else {
-        /*no geo location
-        alert("no geolocation");
-      }
-    });
-
-    function initMap(lat, long) {
-      var userPos = { lat: lat, lng: long };
-      map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: userPos
-      });
       
-       $.ajax({
-        type: "GET",
-        url: "/Red_Light_Camera_Locations.csv",
-        dataType: "text",
-        success: function(response) {
-          var data = $.csv.toArrays(response);
-          $.each(data, function(i, value){
-              var camLat;
-              var camLong;
-              var coorString = value[7].substring(1, value[7].length-1);
-              var coordinates = coorString.split(", ");
-              console.log(coordinates);
-              lightCamPos =  { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) };
-              var infoString = "<h6>" + value[0] + "</h6>;
-              var infowindow = new google.maps.InfoWindow({
-                content: infoString
-              });
-              var marker = new google.maps.Marker({
-                position: lightCamPos,
-                map: map
-              });
-              marker.addListener('click', function() {
-                infowindow.open(map, marker);
-              });
-              
-          }
-        });*/
         <script>
       
       function getLocation() {
+        $("stopSearch").on("click", function() {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(function(position) {
               initMap(position.coords.latitude, position.coords.longitude);
@@ -199,7 +136,7 @@
         } else {
           alert('no geolocation');
         }
-      }
+      });
     
       function initMap(lat, lng) {
         var uluru = {lat: lat, lng: lng};
@@ -220,31 +157,29 @@
               var coordinates = coorString.split(", ");
               console.log(coordinates);
               var lightCamPos =  { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) };
-              var infoString = "<h6>" + value[0] + "</h6>;
+              var infoString = "<h6>" + value[0] + "</h6>";
               var infowindow = new google.maps.InfoWindow({
                 content: infoString
               });
-        var   var marker = new google.maps.Marker({
+              var marker = new google.maps.Marker({
                 position: lightCamPos,
                 map: map,
-                title: 'Uluru (Ayers Rock)'
               });
               
               marker.addListener('click', function() {
                 infowindow.open(map, marker);
               });
-      }
+            });
+          }
+        });
+      } 
     </script>
     
     <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT4jRQQNNBTIb0Xn8LrdlJG_BXLrFGmsU&callback=getLocation">
     </script>
-  </body>
-</html>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJYA2Usidu4Gnz0X2BfWWIAoaBm6lCiZ0&callback=initMap">
+    
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJYA2Usidu4Gnz0X2BfWWIAoaBm6lCiZ0&callback=initMap"></script>
-
-     
-</body>
-
+  </body>
 </html>
